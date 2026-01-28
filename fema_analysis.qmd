@@ -1,14 +1,17 @@
 ---
 title: "FEMA National Risk Index Analysis"
+date: "January 27, 2026"
 author: "Zach Loo"
 ---
 
 ```{r}
+#| message: false
 # Load packages
 library(tidyverse)
 ```
 
 ```{r}
+#| warning: false
 # Load data
 nri_data <- read_csv(here::here("data", "National_Risk_Index_Counties_807384124455672111.csv")) |> 
     janitor::clean_names()
@@ -23,10 +26,7 @@ nri_data <- nri_data |>
 ```
 
 ```{r}
-# state_nri <- nri_data |> 
-#     group_by(state_name) |> 
-#     summarise(mean_nri_score = mean(national_risk_index_score_composite, na.rm = TRUE))
-
+#| include: false
 ggplot(nri_data, aes(x = national_risk_index_score_composite, y = fct_reorder(state_name, national_risk_index_score_composite,))) +
     geom_boxplot() +
     theme_classic() +
@@ -34,20 +34,32 @@ ggplot(nri_data, aes(x = national_risk_index_score_composite, y = fct_reorder(st
 ```
 
 ```{r}
+# Create new 'boolean' column whether the row is a county in California or not
 nri_data <- nri_data |> 
   mutate(is_ca = if_else(state_name == "California", true = "California", false = "Other States"))
 ```
 
+# Plot
+
 ```{r}
-#| fig-alt: "Boxplots comparing FEMA National Risk Index Scores (1-100) in California counties and other states, showing that California counties have higher NRI scores on average."
-ggplot(nri_data, aes(x = national_risk_index_score_composite, y = fct_reorder(is_ca, national_risk_index_score_composite))) +
+#| fig-alt: "Horizontal boxplots comparing FEMA National Risk Index Scores (1-100) in California counties and other states, showing that California counties have higher NRI scores on average."
+#| fig-cap: "Data retrieved from FEMA National Risk Index (2025 Release)."
+
+
+ggplot(nri_data, aes(x = national_risk_index_score_composite, 
+y = fct_reorder(is_ca, national_risk_index_score_composite))) + # Reorder y axis
+
   geom_boxplot(fill = c("grey59", "skyblue")) +
+
   labs(
     x = "NRI Score",
     title = "FEMA National Risk Index (NRI) Comparison",
-    subtitle = "California Counties vs Other States"
+    subtitle = "California counties rank high in NRI Score vs other states."
   ) +
+
   theme_minimal() +
+
+  # Remove y axis title & shift plot titles
   theme(axis.title.y = element_blank(),
   plot.title = element_text(hjust = 0.5, size = 15),
   plot.subtitle = element_text(hjust= 0.5))
@@ -61,12 +73,16 @@ ggplot(nri_data, aes(x = national_risk_index_score_composite, y = fct_reorder(is
 
 2. How did you decide which type of graphic form was best suited for answering the question? What alternative graphic forms could you have used instead? Why did you settle on this particular graphic form?
 
-- Since each observation in this data is a state's county, I thought a visual that included each and every point was too much. Even when aggregating by state, that's still 50 categories to display which is a bit much. At first, I thought just including a top 10 or something, but this goes against the "include data from all 50 states". I feel that 'grouping' the other 49 states all together still include data from all 50 states while being able to see a comparison. With these two boxplots, I think the overall message stays: California has a high NRI score compared to the rest of the US. While I considered having a boxplot for each of the 50 states, it seemed too much.
+- Since each observation in this data is a state's county, I thought a visual that included each and every point was too much. Even when aggregating by state, that's still 50 categories to display which is a bit much. At first, I thought just including a top 10 or something, but this goes against the "include data from all 50 states" from the assignment. I feel that 'grouping' the other 49 states all together still includes data from all 50 states while being able to see a comparison. With these two boxplots, I think the overall message stays: California has a high NRI score compared to the rest of the US. While I considered having a boxplot for each of the 50 states, it seemed too much.
 
 3. Summarize your main finding in no more than two sentences.
 
-Counties in California have high NRI scores compared to the majority of counties in the rest of the US.
+- Counties in California have high NRI scores compared to the majority of counties in the rest of the US.
 
 4. What modifications did you make to this visualization to make it more easily readable?
 
+- The y axis title was not necessary as the axis already seperates what each category is. Also, I moved to title and subtitle to the center because I think this looks nicer, other than that, theme minimal handled the other aesthetic stuff.
+
 5. Is there anything you wanted to implement, but didn’t know how? If so, please describe
+
+- I think I implemented everything I wanted to.
