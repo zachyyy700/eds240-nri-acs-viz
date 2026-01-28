@@ -42,6 +42,7 @@ nri_data <- nri_data |>
 # Plot
 
 ```{r}
+#| label: fig-dbl-boxplots
 #| fig-alt: "Horizontal boxplots comparing FEMA National Risk Index Scores (1-100) in California counties and other states, showing that California counties have higher NRI scores on average."
 #| fig-cap: "Data retrieved from FEMA National Risk Index (2025 Release)."
 
