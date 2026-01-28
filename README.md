@@ -2,7 +2,9 @@
 
 This repository contains the materials for EDS 240 - Data Visualization: Homework 2 & 3, which seek to answer the following questions with data visualizations:
 
--   **HW #2:** *How do FEMA National Risk Index (NRI) scores for counties in California compare to those in other status?*
+-   **HW #2:** *How do FEMA National Risk Index (NRI) scores for counties in California compare to those in other states?*
+
+![](fema_analysis_files/figure-html/fig-dbl-boxplots-1.png)
 
 -   **HW #3:** *How does climate hazard risk exposure vary across race demographics in California?*
 
