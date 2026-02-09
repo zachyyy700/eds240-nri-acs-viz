@@ -1,0 +1,70 @@
+---
+author: "Zach Loo"
+date: "February 9, 2026"
+execute: 
+    warning: false
+    message: false
+---
+
+```{r}
+# Load packages
+library(tidyverse)
+```
+
+```{r}
+#| include: false
+
+# #....Step 1a: see all available ACS variables + descriptions.....
+# acs_vars <- tidycensus::load_variables(year = 2023,
+#                                        dataset = "acs1")
+
+# #..............Step 1b: import race & ethnicity data.............
+# race_ethnicity <- tidycensus::get_acs(
+#   geography = "county",
+#   survey = "acs1",
+#   # NOTE: you may not end up using all these variables
+#   variables = c("B01003_001", "B02001_002", "B02001_003", 
+#                 "B02001_004", "B02001_005", "B02001_006",
+#                 "B02001_007", "B02001_008", "B03002_012",
+#                 "B03002_002"),
+#   state = "CA", 
+#   year = 2023) |>
+#   # join variable descriptions (so we know what's what!)
+#   dplyr::left_join(acs_vars, by = dplyr::join_by(variable == name)) 
+
+# #.................Step 2: write ACS data to file.................
+# readr::write_csv(race_ethnicity, here::here("data", "ACS-1yr-2023-county-race-ethnicity.csv"))
+```
+
+```{r}
+# Read in written csv
+race_ethnicity <- read_csv(here::here("data", "ACS-1yr-2023-county-race-ethnicity.csv")) |> 
+    janitor::clean_names()
+
+# Load nri data
+nri_data <- read_csv(here::here("data", "National_Risk_Index_Counties_807384124455672111.csv")) |> 
+    janitor::clean_names()
+```
+
+```{r}
+# Add county name to census data
+race_ethnicity <- race_ethnicity |> 
+    mutate(county_name = str_trim(str_extract(name, "[\\w\\s]+(?=\\s+County)")), .after = name)
+```
+
+```{r}
+# Analyze unique county values
+length(unique(nri_data$county_name))
+length(unique(race_ethnicity$county_name))
+
+# Filter nri to California
+nri_cali <- nri_data |> 
+    filter(state_name_abbreviation == "CA")
+
+length(unique(nri_cali$county_name))
+```
+
+```{r}
+# Join by county name
+nri_census_joined <- left_join(nri_cali, race_ethnicity, by = 'county_name', relationship = "one-to-many")
+```
