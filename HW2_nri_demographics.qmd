@@ -142,7 +142,7 @@ ggplot(nri_cat_perc, aes(dem_perc, factor(demographic, levels = rev(dem_order)),
 
         axis.title.y = element_blank(),
         axis.text.y = element_blank(),
-        axis.text.x = element_text(size = 12, face = "bold"),
+        axis.text.x = element_text(size = 10),
         panel.grid.major = element_blank(),
         plot.title = element_text(hjust= 0.5))
 ```
