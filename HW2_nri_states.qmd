@@ -2,12 +2,16 @@
 title: "FEMA National Risk Index Analysis"
 date: "January 27, 2026"
 author: "Zach Loo"
+execute:
+  warning: false
+  execute: false
 ---
 
 ```{r}
 #| message: false
 # Load packages
 library(tidyverse)
+library(showtext)
 ```
 
 ```{r}
@@ -41,29 +45,36 @@ nri_data <- nri_data |>
 
 # Plot
 
-```{r}
-#| label: fig-dbl-boxplots
+```{r fig.width=10, fig.height=7}
 #| fig-alt: "Horizontal boxplots comparing FEMA National Risk Index Scores (1-100) in California counties and other states, showing that California counties have higher NRI scores on average."
-#| fig-cap: "Data retrieved from FEMA National Risk Index (2025 Release)."
 
+font_add_google("Bitter")
+showtext_auto()
 
 ggplot(nri_data, aes(x = national_risk_index_score_composite, 
 y = fct_reorder(is_ca, national_risk_index_score_composite))) + # Reorder y axis
 
-  geom_boxplot(fill = c("grey59", "skyblue")) +
+  geom_boxplot(fill = c("grey59", "skyblue"), box.linewidth = 0.5, median.linewidth = 0.3) +
 
   labs(
     x = "NRI Score",
     title = "FEMA National Risk Index (NRI) Comparison",
-    subtitle = "California counties rank high in NRI Score vs other states."
+    subtitle = "California counties rank high in NRI Scores vs other states.",
+    caption = "Data retrived from FEMA National Risk Index (2025)."
   ) +
 
-  theme_minimal() +
+  theme_minimal(base_family = "Bitter") +
 
   # Remove y axis title & shift plot titles
-  theme(axis.title.y = element_blank(),
-  plot.title = element_text(hjust = 0.5, size = 15),
-  plot.subtitle = element_text(hjust= 0.5))
+  theme(
+  axis.title.y = element_blank(),
+  axis.text.y = element_text(size = 15),
+
+  axis.title.x = element_text(size = 14),
+  axis.text.x = element_text(size = 10),
+
+  plot.title = element_text(hjust = 0.5, size = 18),
+  plot.subtitle = element_text(hjust= 0.5), size = 12)
 ```
 
 # Data Viz Questions
