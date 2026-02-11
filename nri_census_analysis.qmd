@@ -1,4 +1,5 @@
 ---
+title: "Climate Risk by Census Demographic Analysis"
 author: "Zach Loo"
 date: "February 9, 2026"
 execute: 
@@ -9,12 +10,13 @@ execute:
 ```{r}
 # Load packages
 library(tidyverse)
+library(scales)
 ```
 
 ```{r}
 #| include: false
 
-# #....Step 1a: see all available ACS variables + descriptions.....
+# # #....Step 1a: see all available ACS variables + descriptions.....
 # acs_vars <- tidycensus::load_variables(year = 2023,
 #                                        dataset = "acs1")
 
@@ -36,6 +38,7 @@ library(tidyverse)
 # readr::write_csv(race_ethnicity, here::here("data", "ACS-1yr-2023-county-race-ethnicity.csv"))
 ```
 
+
 ```{r}
 # Read in written csv
 race_ethnicity <- read_csv(here::here("data", "ACS-1yr-2023-county-race-ethnicity.csv")) |> 
@@ -46,25 +49,100 @@ nri_data <- read_csv(here::here("data", "National_Risk_Index_Counties_8073841244
     janitor::clean_names()
 ```
 
+## Prepare for data join
+
 ```{r}
 # Add county name to census data
 race_ethnicity <- race_ethnicity |> 
     mutate(county_name = str_trim(str_extract(name, "[\\w\\s]+(?=\\s+County)")), .after = name)
-```
-
-```{r}
-# Analyze unique county values
-length(unique(nri_data$county_name))
-length(unique(race_ethnicity$county_name))
 
 # Filter nri to California
 nri_cali <- nri_data |> 
     filter(state_name_abbreviation == "CA")
-
-length(unique(nri_cali$county_name))
 ```
 
 ```{r}
 # Join by county name
 nri_census_joined <- left_join(nri_cali, race_ethnicity, by = 'county_name', relationship = "one-to-many")
+```
+
+## Data Wrangling
+
+```{r}
+# Select columns of interest
+nri_census_select <- nri_census_joined |> 
+    select(county_name, national_risk_index_score_composite, national_risk_index_rating_composite, estimate, label) |> 
+    relocate(c(estimate, label), .after = county_name)
+```
+
+```{r}
+# Create cleaner demographic column
+nri_census_cleandem <- nri_census_select |> 
+    mutate(demographic = case_when(
+        str_detect(label, "White") ~ "White",
+        str_detect(label, "Black") ~ "Black",
+        str_detect(label, "Total:!!Hispanic") ~ "Hispanic/Latino",
+        str_detect(label, "Indian") ~ "American Indian/Alaska Native",
+        str_detect(label, "Asian") ~ "Asian",
+        str_detect(label, "Hawaiian") ~ "Native Hawaiian/Pacific Islander",
+        str_detect(label, "Other Race") ~ "Other Race",
+        str_detect(label, "Two or More") ~ "2+ Races",
+        str_detect(label, "Total:!!Not") ~ "Not Hispanic/Latino",
+        str_detect(label, "Estimate!!Total") ~ "Total Pop"
+    )) |> 
+
+    relocate(demographic, .after = label) |> 
+    select(-label)
+```
+
+Each county has one hazard score so that each demographic (in a county) has the same hazard score. How to handle?
+
+```{r}
+# Aggregate demographic & nri category
+nri_categories <- nri_census_cleandem |> 
+    group_by(demographic, national_risk_index_rating_composite) |> 
+    summarise(dem_sum = sum(estimate)) |> 
+    ungroup()
+```
+
+```{r}
+nri_cat_perc <- nri_categories |> 
+    group_by(demographic) |> 
+    mutate(dem_perc = dem_sum / sum(dem_sum)) |> 
+    rename(nri_category = national_risk_index_rating_composite) |> 
+    mutate(nri_category = factor(nri_category, levels = c("Very High", "Relatively High", "Relatively Moderate", "Relatively Low", "Very Low"))) |> 
+    filter(!demographic %in% c("Total Pop", "Not Hispanic/Latino", NA)) 
+```
+
+```{r}
+# Create descending order of demographic groups for plot
+dem_order <- nri_cat_perc |> 
+    filter(nri_category == "Very High") |> 
+    arrange(desc(dem_perc)) |> 
+    pull(demographic)
+```
+
+```{r}
+ggplot(nri_cat_perc, aes(dem_perc, factor(demographic, levels = rev(dem_order)), fill = nri_category)) +
+    geom_col(position = position_stack(reverse  = TRUE)) +
+
+    geom_text(aes(label = demographic, x = 0.01), hjust = 0) +
+
+    theme_minimal() +
+
+    scale_x_continuous(labels = label_percent()) +
+
+    scale_fill_manual(values = c("#ffadad", "#ffd6a5", "#fdffb6", "#bdb2ff")) +
+
+    labs(x = "Percentage Population", title = "National Risk Index Across Demographic Groups") +
+
+    theme(
+        legend.position = "top",
+        legend.title = element_blank(),
+
+        axis.title.y = element_blank(),
+        axis.text.y = element_blank(),
+        axis.text.x = element_text(size = 12, face = "bold"),
+        panel.grid.major = element_blank(),
+        plot.title = element_text(hjust= 0.5))
 ```
