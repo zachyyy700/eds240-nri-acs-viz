@@ -73,8 +73,8 @@ y = fct_reorder(is_ca, national_risk_index_score_composite))) + # Reorder y axis
   axis.title.x = element_text(size = 14),
   axis.text.x = element_text(size = 10),
 
-  plot.title = element_text(hjust = 0.5, size = 18),
-  plot.subtitle = element_text(hjust= 0.5), size = 12)
+  plot.title = element_text(hjust = 0.5, size = 28),
+  plot.subtitle = element_text(hjust= 0.5), size = 18)
 ```
 
 # Data Viz Questions
