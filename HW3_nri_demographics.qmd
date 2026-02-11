@@ -147,7 +147,7 @@ ggplot(nri_cat_perc, aes(dem_perc, factor(demographic, levels = rev(dem_order)),
 
     labs(x = "Percentage", 
     title = "National Risk Index Across Demographic Groups in California", subtitle = "Asian, Black, and Other Race populations are amongst the highest risk to climate hazards.",
-    caption = "Data: FEMA National Risk Index (2025) & US Census Bureae American Community Survey (2023).") +
+    caption = "Data: FEMA National Risk Index (2025) & US Census Bureau American Community Survey (2023).") +
 
     theme(
         # Adjust legend
