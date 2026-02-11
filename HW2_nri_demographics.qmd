@@ -11,6 +11,8 @@ execute:
 # Load packages
 library(tidyverse)
 library(scales)
+library(wesanderson)
+library(showtext)
 ```
 
 ```{r}
@@ -101,14 +103,16 @@ Each county has one hazard score so that each demographic (in a county) has the 
 # Aggregate demographic & nri category
 nri_categories <- nri_census_cleandem |> 
     group_by(demographic, national_risk_index_rating_composite) |> 
-    summarise(dem_sum = sum(estimate)) |> 
+    summarise(dem_sum = sum(estimate)) |> # Get total of each demographic per nri category
     ungroup()
 ```
 
 ```{r}
+# Create demographic percentage column per nri category
 nri_cat_perc <- nri_categories |> 
     group_by(demographic) |> 
     mutate(dem_perc = dem_sum / sum(dem_sum)) |> 
+
     rename(nri_category = national_risk_index_rating_composite) |> 
     mutate(nri_category = factor(nri_category, levels = c("Very High", "Relatively High", "Relatively Moderate", "Relatively Low", "Very Low"))) |> 
     filter(!demographic %in% c("Total Pop", "Not Hispanic/Latino", NA)) 
@@ -122,27 +126,44 @@ dem_order <- nri_cat_perc |>
     pull(demographic)
 ```
 
-```{r}
+```{r fig.width=10, fig.height=7}
+#| fig-alt: "Horizontal, stacked bar plots showing the proportion of National Risk Index Categories for each demographic group in California, the most at risk being Asian, Black, and Other Race populations."
+# Add google font
+font_add_google("Bitter")
+showtext_auto()
+
 ggplot(nri_cat_perc, aes(dem_perc, factor(demographic, levels = rev(dem_order)), fill = nri_category)) +
     geom_col(position = position_stack(reverse  = TRUE)) +
 
-    geom_text(aes(label = demographic, x = 0.01), hjust = 0) +
+    # Add demographic group within each bar
+    geom_text(aes(label = demographic, x = 0.01), hjust = 0, vjust = 1.05, size = 7) +
 
-    theme_minimal() +
+    theme_minimal(base_family = "Bitter") +
 
+    # Change x labels to percents
     scale_x_continuous(labels = label_percent()) +
 
-    scale_fill_manual(values = c("#ffadad", "#ffd6a5", "#fdffb6", "#bdb2ff")) +
+    scale_fill_manual(values = rev(wes_palette("Zissou1"))) +
 
-    labs(x = "Percentage Population", title = "National Risk Index Across Demographic Groups") +
+    labs(x = "Percentage", 
+    title = "National Risk Index Across Demographic Groups in California", subtitle = "Asian, Black, and Other Race populations are amongst the highest risk to climate hazards.",
+    caption = "Data: FEMA National Risk Index (2025) & US Census Bureae American Community Survey (2023).") +
 
     theme(
+        # Adjust legend
         legend.position = "top",
         legend.title = element_blank(),
+        legend.text = element_text(size = 12),
 
+        # Adjust axes
         axis.title.y = element_blank(),
         axis.text.y = element_blank(),
-        axis.text.x = element_text(size = 10),
-        panel.grid.major = element_blank(),
-        plot.title = element_text(hjust= 0.5))
+        axis.title.x = element_text(size = 15),
+        axis.text.x = element_text(size = 13),
+
+        plot.title = element_text(hjust= 0.5, size = 22),
+        plot.subtitle = element_text(hjust= 0.5, size = 13),
+        plot.caption = element_text(margin = margin(t = 10)),
+        panel.grid.major = element_blank())
+        
 ```
