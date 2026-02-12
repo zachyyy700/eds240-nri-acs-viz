@@ -16,8 +16,6 @@ library(showtext)
 ```
 
 ```{r}
-#| include: false
-
 # # #....Step 1a: see all available ACS variables + descriptions.....
 # acs_vars <- tidycensus::load_variables(year = 2023,
 #                                        dataset = "acs1")
@@ -26,7 +24,6 @@ library(showtext)
 # race_ethnicity <- tidycensus::get_acs(
 #   geography = "county",
 #   survey = "acs1",
-#   # NOTE: you may not end up using all these variables
 #   variables = c("B01003_001", "B02001_002", "B02001_003", 
 #                 "B02001_004", "B02001_005", "B02001_006",
 #                 "B02001_007", "B02001_008", "B03002_012",
