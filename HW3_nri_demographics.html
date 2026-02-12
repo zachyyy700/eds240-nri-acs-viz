@@ -60,18 +60,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="HW2_nri_demographics_files/libs/clipboard/clipboard.min.js"></script>
-<script src="HW2_nri_demographics_files/libs/quarto-html/quarto.js" type="module"></script>
-<script src="HW2_nri_demographics_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="HW2_nri_demographics_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="HW2_nri_demographics_files/libs/quarto-html/popper.min.js"></script>
-<script src="HW2_nri_demographics_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="HW2_nri_demographics_files/libs/quarto-html/anchor.min.js"></script>
-<link href="HW2_nri_demographics_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="HW2_nri_demographics_files/libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="HW2_nri_demographics_files/libs/bootstrap/bootstrap.min.js"></script>
-<link href="HW2_nri_demographics_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="HW2_nri_demographics_files/libs/bootstrap/bootstrap-d6a003b94517c951b2d65075d42fb01b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="HW3_nri_demographics_files/libs/clipboard/clipboard.min.js"></script>
+<script src="HW3_nri_demographics_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="HW3_nri_demographics_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="HW3_nri_demographics_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="HW3_nri_demographics_files/libs/quarto-html/popper.min.js"></script>
+<script src="HW3_nri_demographics_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="HW3_nri_demographics_files/libs/quarto-html/anchor.min.js"></script>
+<link href="HW3_nri_demographics_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="HW3_nri_demographics_files/libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="HW3_nri_demographics_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="HW3_nri_demographics_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="HW3_nri_demographics_files/libs/bootstrap/bootstrap-d6a003b94517c951b2d65075d42fb01b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
 
 </head>
@@ -215,9 +215,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">rev</span>(<span class="fu">wes_palette</span>(<span class="st">"Zissou1"</span>))) <span class="sc">+</span></span>
 <span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Percentage"</span>, </span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Population Percentage"</span>, </span>
 <span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"National Risk Index Across Demographic Groups in California"</span>, <span class="at">subtitle =</span> <span class="st">"Asian, Black, and Other Race populations are amongst the highest risk to climate hazards."</span>,</span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Data: FEMA National Risk Index (2025) &amp; US Census Bureae American Community Survey (2023)."</span>) <span class="sc">+</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Data: FEMA National Risk Index (2025) &amp; US Census Bureau American Community Survey (2023)."</span>) <span class="sc">+</span></span>
 <span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
 <span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Adjust legend</span></span>
@@ -238,11 +238,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="HW2_nri_demographics_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" alt="Horizontal, stacked bar plots showing the proportion of National Risk Index Categories for each demographic group in California, the most at risk being Asian, Black, and Other Race populations." width="960"></p>
+<p><img src="HW3_nri_demographics_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" alt="Horizontal, stacked bar plots showing the proportion of National Risk Index Categories for each demographic group in California, the most at risk being Asian, Black, and Other Race populations." width="960"></p>
 </figure>
 </div>
 </div>
 </div>
+</section>
+<section id="questions" class="level2">
+<h2 class="anchored" data-anchor-id="questions">Questions</h2>
+<ol type="1">
+<li>What are your variables of interest and what kinds of data (e.g.&nbsp;numeric, categorical, ordered, etc.) are they (a bullet point list is fine)?</li>
+</ol>
+<p>The variables of interest for this assignment are demographic group and its estimate from the census data which is categorical and numerical respectively. From the FEMA data, I was debating whether to use the numerical risk score or the categorical risk rating. I even considered including the specific climate risks like avalanche, earthquake, etc., but realized it’s easier to just used the same variable we used for the last homework.</p>
+<ol start="2" type="1">
+<li>How did you decide which type of graphic form was best suited for answering the question? What alternative graphic forms could you have used instead? Why did you settle on this particular graphic form?</li>
+</ol>
+<p>This assignment was more difficult for this one because I was trying to imagine plots for using both the numerical nri score and the categorical one. And also for both methods, trying to figure out how to aggregate the data since the FEMA is one observation per county and the census had multiple demographics per county so the FEMA score was the same for all of the demographics, in each county. I thought this stacked bar plot was the best because it mainly highlights the “Very High” category as it takes up most of each stack. The Very High is the most easily comparable and also kinda what we care about, which demographic has the most percent in the Very High category. I considered making this a dodged bar plot but it looked too much, and a pie chart for each demographic would’ve been difficult to see the ranks.</p>
+<ol start="3" type="1">
+<li>Summarize your main finding in no more than two sentences.</li>
+</ol>
+<p>Asian, Black, and Other Race demographic groups have the most populations by percentage in Very High risk areas in California.</p>
+<ol start="4" type="1">
+<li>What modifications did you make to this visualization to make it more easily readable?</li>
+</ol>
+<p>I wanted to play more with the fonts this time so I added a font from Google and played around more with the sizes of each text element. Also instead of the y axis text being outside of the plot, it made more sense to have it on the inside so the viewer wouldn’t have to jump far between the edge of the red bar and the demographic text. I also centered the title and subtitle and put the legend on the top too because it looks better like that.</p>
+<ol start="5" type="1">
+<li>Is there anything you wanted to implement, but didn’t know how? If so, please describe.</li>
+</ol>
+<p>It’s really annoying to change font sizes and nudging especially when adjusting for different viewers. For example, at first I was perfecting the plot so it looks good on the pdf output for the homework submission. After I got it to a good place, I wanted to put it in the readme of the GitHub repository so I added it and it did not look as good. Mainly the font sizes and the alignment of the demographic text to be ‘sitting’ on the bottom of each bar. Because saving a ggplot as a png to put in GitHub, I think it just constrains and distorts the ratios in some way. I am considering using Affinity more from today’s class to perhaps combat this issue.</p>
 </section>
 
 </main>
